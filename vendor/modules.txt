@@ -1,0 +1,40 @@
+# git.cyrilix.bzh/cyrilix/goupnp v0.0.0-20221101190330-00a824fe48a3
+## explicit; go 1.19
+git.cyrilix.bzh/cyrilix/goupnp
+git.cyrilix.bzh/cyrilix/goupnp/dcps/openhome
+git.cyrilix.bzh/cyrilix/goupnp/httpu
+git.cyrilix.bzh/cyrilix/goupnp/scpd
+git.cyrilix.bzh/cyrilix/goupnp/soap
+git.cyrilix.bzh/cyrilix/goupnp/ssdp
+# github.com/eclipse/paho.mqtt.golang v1.4.2
+## explicit; go 1.14
+github.com/eclipse/paho.mqtt.golang
+github.com/eclipse/paho.mqtt.golang/packets
+# github.com/gorilla/websocket v1.4.2
+## explicit; go 1.12
+github.com/gorilla/websocket
+# github.com/pkg/errors v0.9.1
+## explicit
+# go.uber.org/atomic v1.7.0
+## explicit; go 1.13
+go.uber.org/atomic
+# go.uber.org/multierr v1.6.0
+## explicit; go 1.12
+go.uber.org/multierr
+# go.uber.org/zap v1.23.0
+## explicit; go 1.18
+go.uber.org/zap
+go.uber.org/zap/buffer
+go.uber.org/zap/internal
+go.uber.org/zap/internal/bufferpool
+go.uber.org/zap/internal/color
+go.uber.org/zap/internal/exit
+go.uber.org/zap/zapcore
+# golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4
+## explicit; go 1.11
+golang.org/x/net/internal/socks
+golang.org/x/net/proxy
+# golang.org/x/sync v0.1.0
+## explicit
+golang.org/x/sync/errgroup
+golang.org/x/sync/semaphore
