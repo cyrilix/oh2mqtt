@@ -5,10 +5,8 @@ name: Go
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+    branches: [ "main", "feat/cicd" ]
+    tags:
 jobs:
 
   build:
@@ -29,4 +27,32 @@ jobs:
 
     - name: Vet
       run: go vet -v ./...
-      
+
+  tag_version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.git-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - id: git-version
+        run: echo "version=$(git describe)" >> $GITHUB_OUTPUT
+
+  container-latest:
+    if: ${{ contains(fromJson('["main"]'), github.ref_name) }}
+    needs:
+      - tag_version
+      - build
+    uses: ./.github/workflows/containers.yml
+    with:
+      tag-name: latest
+
+  container-release:
+    if: ${{ github.ref_type == 'tag' && startsWith('v', github.ref_name)  }}
+    needs:
+      - tag_version
+      - build
+    uses: ./.github/workflows/containers.yml
+    with:
+      tag-name: ${{ needs.tag_version.outputs.version }}
