@@ -1,11 +1,14 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"github.com/cyrilix/oh2mqtt/pkg/cli"
 	"github.com/cyrilix/oh2mqtt/pkg/events"
+	"github.com/hellofresh/health-go/v4"
 	"go.uber.org/zap"
 	"log"
+	"net/http"
 	"os"
 	"time"
 )
@@ -19,6 +22,7 @@ func main() {
 	var mqttBroker, username, password, clientId string
 	var intervalPublishSec int
 	var topicBaseName string
+	var probeListen, probePath string
 
 	mqttQos := cli.InitIntFlag("MQTT_QOS", 0)
 	_, mqttRetain := os.LookupEnv("MQTT_RETAIN")
@@ -27,6 +31,8 @@ func main() {
 
 	flag.IntVar(&intervalPublishSec, "interval-time-pub", 10, "time interval inb seconds between 2 msgs")
 	flag.StringVar(&topicBaseName, "topic-base-name", "openhome/room/%s/%s", "Topcic name pattern to publish")
+	flag.StringVar(&probeListen, "probe-listen", ":8080", "Port and ip to listen for probes")
+	flag.StringVar(&probePath, "probe-path", "/status", "HTTP path for probes")
 
 	logLevel := zap.LevelFlag("log", zap.InfoLevel, "log level")
 	flag.Parse()
@@ -60,6 +66,23 @@ func main() {
 	defer func() { _ = ohg.Close() }()
 
 	cli.HandleExit(ohg)
+
+	healthz, _ := health.New(
+		health.WithChecks(health.Config{
+			Name:      "oh2mqtt",
+			Timeout:   5 * time.Second,
+			SkipOnErr: false,
+			Check: func(ctx context.Context) error {
+				return nil
+			},
+		}),
+	)
+	http.Handle(probePath, healthz.Handler())
+
+	zap.S().Debug("run status handler")
+	go func() {
+		log.Fatal(http.ListenAndServe(probeListen, nil))
+	}()
 
 	ohg.Start()
 }
