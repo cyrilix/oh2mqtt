@@ -126,12 +126,21 @@ func setDefaultValueFromEnv(value *string, key string, defaultValue string) {
 	}
 }
 
+type Topic string
+
+type TopicFormatter string
+
+func (t TopicFormatter) Apply(room string, topic string) Topic {
+	return Topic(fmt.Sprintf(string(t), room, topic))
+}
+
 type Publisher interface {
-	Publish(topic string, payload []byte) error
+	Publish(topic Topic, payload []byte) error
+	PublishAsString(topic Topic, payload fmt.Stringer) error
 }
 
 type Subscriber interface {
-	Subscribe(topic string, mh MQTT.MessageHandler)
+	Subscribe(topic Topic, mh MQTT.MessageHandler)
 }
 
 type MQTTPubSub interface {
@@ -155,18 +164,22 @@ type MqttPublisher struct {
 	retained bool
 }
 
-func (m *MqttPublisher) Publish(topic string, payload []byte) error {
-	token := m.client.Publish(topic, m.qos, m.retained, payload)
+func (m *MqttPublisher) Publish(topic Topic, payload []byte) error {
+	token := m.client.Publish(string(topic), 0, false, payload)
 	token.WaitTimeout(10 * time.Millisecond)
 	if err := token.Error(); err != nil {
-		return fmt.Errorf("unable to publish to topic: %v", err)
+		return fmt.Errorf("unable to events to topic: %v", err)
 	}
 	return nil
 }
 
+func (m *MqttPublisher) PublishAsString(topic Topic, payload fmt.Stringer) error {
+	return m.Publish(topic, []byte(payload.String()))
+}
+
 // Subscribe register func to execute on message
-func (m *MqttPublisher) Subscribe(topic string, callback MQTT.MessageHandler) {
-	tokenResp := m.client.Subscribe(topic, m.qos, callback)
+func (m *MqttPublisher) Subscribe(topic Topic, callback MQTT.MessageHandler) {
+	tokenResp := m.client.Subscribe(string(topic), m.qos, callback)
 	if tokenResp.Error() != nil {
 		zap.S().Fatalf("%+v", tokenResp.Error())
 	}

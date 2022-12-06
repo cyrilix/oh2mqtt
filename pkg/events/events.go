@@ -3,6 +3,7 @@ package events
 import (
 	"context"
 	"fmt"
+	"github.com/cyrilix/mqtt-tools/mqttTooling"
 	"github.com/cyrilix/oh2mqtt/pkg/oh2mqtt"
 	"go.uber.org/zap"
 	"time"
@@ -11,7 +12,7 @@ import (
 type Option func(o *OHGateway)
 
 func WithTopicFormat(topicFormat string) Option {
-	tf := TopicFormatter(topicFormat)
+	tf := mqttTooling.TopicFormatter(topicFormat)
 	return func(o *OHGateway) {
 		o.tf = &tf
 	}
@@ -29,8 +30,8 @@ func WithDeviceDiscover(d oh2mqtt.DevicesDiscover) Option {
 	}
 }
 
-func NewOHGateway(publisher Publisher, opts ...Option) *OHGateway {
-	defaultTopicFormatter := TopicFormatter("room/%s/%s")
+func NewOHGateway(publisher mqttTooling.Publisher, opts ...Option) *OHGateway {
+	defaultTopicFormatter := mqttTooling.TopicFormatter("room/%s/%s")
 	o := &OHGateway{
 		tf:              &defaultTopicFormatter,
 		d:               &oh2mqtt.UpnpDevicesDiscover{},
@@ -45,9 +46,9 @@ func NewOHGateway(publisher Publisher, opts ...Option) *OHGateway {
 }
 
 type OHGateway struct {
-	tf              *TopicFormatter
+	tf              *mqttTooling.TopicFormatter
 	d               oh2mqtt.DevicesDiscover
-	p               Publisher
+	p               mqttTooling.Publisher
 	intervalPublish time.Duration
 	cancel          chan interface{}
 }

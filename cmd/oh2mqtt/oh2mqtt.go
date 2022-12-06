@@ -75,7 +75,7 @@ func main() {
 	}
 	defer client.Disconnect(50)
 
-	p := events.NewMqttPublisher(client)
+	p := mqttTooling.NewMQTTPubSub(client)
 	ohg := events.NewOHGateway(p, events.WithIntervalPublish(time.Duration(intervalPublishSec)*time.Second), events.WithTopicFormat(topicBaseName))
 	defer func() { _ = ohg.Close() }()
 

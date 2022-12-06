@@ -1,8 +1,8 @@
 git.cyrilix.bzh/cyrilix/goupnp v0.0.0-20221101190330-00a824fe48a3 h1:5RzMG349hxKXJAqlZyVpn9xBfCMkl0iuzC+d0nbWy7w=
 git.cyrilix.bzh/cyrilix/goupnp v0.0.0-20221101190330-00a824fe48a3/go.mod h1:n4YeZF3/7+dEE/Zb6WOhoPkonLIS9hKwz6QaSOHzpyU=
 github.com/benbjohnson/clock v1.1.0 h1:Q92kusRqC1XV2MjkWETPvjJVqKetz1OzxZB7mHJLju8=
-github.com/cyrilix/mqtt-tools v0.3.0 h1:QO1XX0Qnx0M8XulH8cnlHluuIeCBglYvyhyWix/FbHE=
-github.com/cyrilix/mqtt-tools v0.3.0/go.mod h1:e+JAOTmfz5IVmrUNrosf1spNsKOCCvL9phH5YHgHgzs=
+github.com/cyrilix/mqtt-tools v0.4.0 h1:P7Ps2oQ1YoJQ2kWZpRodzs0GlwlssjaLPTc2FXb5vKE=
+github.com/cyrilix/mqtt-tools v0.4.0/go.mod h1:e+JAOTmfz5IVmrUNrosf1spNsKOCCvL9phH5YHgHgzs=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

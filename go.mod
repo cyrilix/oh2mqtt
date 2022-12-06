@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	git.cyrilix.bzh/cyrilix/goupnp v0.0.0-20221101190330-00a824fe48a3
-	github.com/cyrilix/mqtt-tools v0.3.0
+	github.com/cyrilix/mqtt-tools v0.4.0
 	github.com/eclipse/paho.mqtt.golang v1.4.2
 	github.com/hellofresh/health-go/v4 v4.7.0
 	go.uber.org/zap v1.24.0

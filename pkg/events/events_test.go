@@ -3,6 +3,7 @@ package events
 import (
 	"context"
 	"fmt"
+	"github.com/cyrilix/mqtt-tools/mqttTooling"
 	"github.com/cyrilix/oh2mqtt/pkg/oh2mqtt"
 	"sync"
 	"testing"
@@ -68,12 +69,12 @@ func (d *DeviceDiscoverMock) ListMusicController(_ context.Context) ([]oh2mqtt.M
 
 type PublisherMock struct {
 	muMsgs sync.RWMutex
-	msgs   map[Topic][]string
+	msgs   map[mqttTooling.Topic][]string
 
 	wait *sync.WaitGroup
 }
 
-func (p *PublisherMock) GetMsgs(topic Topic) []string {
+func (p *PublisherMock) GetMsgs(topic mqttTooling.Topic) []string {
 	p.muMsgs.RLock()
 	defer p.muMsgs.RUnlock()
 	msgs, ok := p.msgs[topic]
@@ -91,20 +92,20 @@ func (p *PublisherMock) Wait(n int) *sync.WaitGroup {
 	return p.wait
 }
 
-func (p *PublisherMock) Publish(topic Topic, payload []byte) error {
+func (p *PublisherMock) Publish(topic mqttTooling.Topic, payload []byte) error {
 	return p.publishString(topic, string(payload))
 }
 
-func (p *PublisherMock) PublishAsString(topic Topic, payload fmt.Stringer) error {
+func (p *PublisherMock) PublishAsString(topic mqttTooling.Topic, payload fmt.Stringer) error {
 	return p.publishString(topic, payload.String())
 }
 
-func (p *PublisherMock) publishString(topic Topic, payload string) error {
+func (p *PublisherMock) publishString(topic mqttTooling.Topic, payload string) error {
 	p.muMsgs.Lock()
 	defer p.muMsgs.Unlock()
 
 	if p.msgs == nil {
-		p.msgs = make(map[Topic][]string)
+		p.msgs = make(map[mqttTooling.Topic][]string)
 	}
 
 	if _, ok := p.msgs[topic]; !ok {
@@ -124,7 +125,7 @@ func TestOHGateway(t *testing.T) {
 	tests := []struct {
 		name   string
 		fields fields
-		want   map[Topic]string
+		want   map[mqttTooling.Topic]string
 	}{
 		{
 			name: "publish source name",
@@ -145,7 +146,7 @@ func TestOHGateway(t *testing.T) {
 					),
 				},
 			},
-			want: map[Topic]string{Topic("test/room/room1/source/name"): "radio"},
+			want: map[mqttTooling.Topic]string{mqttTooling.Topic("test/room/room1/source/name"): "radio"},
 		},
 		{
 			name: "publish source type",
@@ -167,7 +168,7 @@ func TestOHGateway(t *testing.T) {
 					),
 				},
 			},
-			want: map[Topic]string{Topic("test/room/room1/source/type"): oh2mqtt.SourceTypeRadio.String()},
+			want: map[mqttTooling.Topic]string{mqttTooling.Topic("test/room/room1/source/type"): oh2mqtt.SourceTypeRadio.String()},
 		},
 		{
 			name: "publish source state",
@@ -189,7 +190,7 @@ func TestOHGateway(t *testing.T) {
 					),
 				},
 			},
-			want: map[Topic]string{Topic("test/room/room1/state"): oh2mqtt.StatePlaying.String()},
+			want: map[mqttTooling.Topic]string{mqttTooling.Topic("test/room/room1/state"): oh2mqtt.StatePlaying.String()},
 		},
 		{
 			name: "publish volume level",
@@ -211,7 +212,7 @@ func TestOHGateway(t *testing.T) {
 					),
 				},
 			},
-			want: map[Topic]string{Topic("test/room/room1/volume"): "10"},
+			want: map[mqttTooling.Topic]string{mqttTooling.Topic("test/room/room1/volume"): "10"},
 		},
 		{
 			name: "publish mute state",
@@ -233,7 +234,7 @@ func TestOHGateway(t *testing.T) {
 					),
 				},
 			},
-			want: map[Topic]string{Topic("test/room/room1/volume/mute"): "ON"},
+			want: map[mqttTooling.Topic]string{mqttTooling.Topic("test/room/room1/volume/mute"): "ON"},
 		},
 	}
 	for _, tt := range tests {

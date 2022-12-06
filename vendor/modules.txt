@@ -6,7 +6,7 @@ git.cyrilix.bzh/cyrilix/goupnp/httpu
 git.cyrilix.bzh/cyrilix/goupnp/scpd
 git.cyrilix.bzh/cyrilix/goupnp/soap
 git.cyrilix.bzh/cyrilix/goupnp/ssdp
-# github.com/cyrilix/mqtt-tools v0.3.0
+# github.com/cyrilix/mqtt-tools v0.4.0
 ## explicit; go 1.19
 github.com/cyrilix/mqtt-tools/mqttTooling
 # github.com/eclipse/paho.mqtt.golang v1.4.2
