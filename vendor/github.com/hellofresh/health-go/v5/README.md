@@ -14,6 +14,7 @@
   * gRPC
   * Memcached
   * InfluxDB
+  * Nats
 
 ## Usage
 
@@ -32,16 +33,16 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/hellofresh/health-go/v4"
-	healthMysql "github.com/hellofresh/health-go/v4/checks/mysql"
+	"github.com/hellofresh/health-go/v5"
+	healthMysql "github.com/hellofresh/health-go/v5/checks/mysql"
 )
 
 func main() {
 	// add some checks on instance creation
 	h, _ := health.New(health.WithComponent(health.Component{
-      Name:    "myservice",
-      Version: "v1.0",
-    }), health.WithChecks(health.Config{
+		Name:    "myservice",
+		Version: "v1.0",
+	}), health.WithChecks(health.Config{
 		Name:      "rabbitmq",
 		Timeout:   time.Second * 5,
 		SkipOnErr: true,
@@ -82,16 +83,16 @@ import (
 	"time"
 
 	"github.com/go-chi/chi"
-	"github.com/hellofresh/health-go/v4"
-	healthMysql "github.com/hellofresh/health-go/v4/checks/mysql"
+	"github.com/hellofresh/health-go/v5"
+	healthMysql "github.com/hellofresh/health-go/v5/checks/mysql"
 )
 
 func main() {
 	// add some checks on instance creation
 	h, _ := health.New(health.WithComponent(health.Component{
-      Name:    "myservice",
-      Version: "v1.0",
-    }), health.WithChecks(health.Config{
+		Name:    "myservice",
+		Version: "v1.0",
+	}), health.WithChecks(health.Config{
 		Name:      "rabbitmq",
 		Timeout:   time.Second * 5,
 		SkipOnErr: true,

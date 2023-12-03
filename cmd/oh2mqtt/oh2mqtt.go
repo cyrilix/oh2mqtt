@@ -5,7 +5,7 @@ import (
 	"flag"
 	"github.com/cyrilix/mqtt-tools/mqttTooling"
 	"github.com/cyrilix/oh2mqtt/pkg/events"
-	"github.com/hellofresh/health-go/v4"
+	"github.com/hellofresh/health-go/v5"
 	"go.uber.org/zap"
 	"io"
 	"log"
